@@ -1,6 +1,8 @@
 package com.spring.authserver.controller;
 
 import com.spring.authserver.dto.AuthResponseDto;
+import com.spring.authserver.dto.LoginRequestDto;
+import com.spring.authserver.dto.LoginResponseDto;
 import com.spring.authserver.dto.SignupRequestDto;
 import com.spring.authserver.service.AuthService;
 import jakarta.validation.Valid;
@@ -21,5 +23,11 @@ public class AuthController {
     public ResponseEntity<AuthResponseDto> signup(@RequestBody @Valid SignupRequestDto requestDto) {
         AuthResponseDto responseDto = new AuthResponseDto(authService.signup(requestDto));
         return ResponseEntity.ok(responseDto);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto requestDto) {
+        String token = authService.login(requestDto);
+        return ResponseEntity.ok(new LoginResponseDto("로그인 성공", token));
     }
 }

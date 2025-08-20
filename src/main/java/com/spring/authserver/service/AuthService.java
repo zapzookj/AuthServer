@@ -1,5 +1,6 @@
 package com.spring.authserver.service;
 
+import com.spring.authserver.dto.LoginRequestDto;
 import com.spring.authserver.dto.SignupRequestDto;
 import com.spring.authserver.exception.AppException;
 import com.spring.authserver.exception.ErrorCode;
@@ -38,5 +39,16 @@ public class AuthService {
         );
 
         return userRepository.save(user);
+    }
+
+    public String login(LoginRequestDto requestDto) {
+        User user = userRepository.findByUsername(requestDto.getUsername())
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_CREDENTIALS, "아이디 또는 비밀번호가 올바르지 않습니다."));
+
+        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
+            throw new AppException(ErrorCode.INVALID_CREDENTIALS, "아이디 또는 비밀번호가 올바르지 않습니다.");
+        }
+
+        return jwtTokenProvider.generateToken(user.getId(), user.getUsername(), user.getRoles());
     }
 }

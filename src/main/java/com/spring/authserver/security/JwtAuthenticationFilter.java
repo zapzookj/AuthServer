@@ -63,6 +63,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String toJson(ErrorResponseDto responseDto) throws IOException {
-        return "{\"error\":{\"code\":\"" + responseDto.getError().getCode() + "\",\"message\":\"" + responseDto.getError().getCode() + "\"}}";
+        return "{\"error\":{\"code\":\"" + responseDto.getError().getCode() + "\",\"message\":\"" + responseDto.getError().getMessage() + "\"}}";
     }
 }
